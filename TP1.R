@@ -1,144 +1,127 @@
+# TP : Manipulation de Dataframes en R (Iris, Manga et Anime)
 
-#1 Afficher le jeu de données iris puis afficher la classe de l'objet iris.
+# EXERCICE 1 - Utilisation d'un dataframe existant (Iris)
+
+# 1. Afficher le jeu de données iris puis afficher la classe de l'objet iris.
 iris
 class(iris)
 
-#2 Afficher le jeu de données iris dans une vue avec la fonction View()
+# 2. Afficher le jeu de données iris dans une vue avec la fonction View()
 View(iris)
 
-#3 Afficher le nombre de lignes avec la fonction nrow()
+# 3. Afficher le nombre de lignes avec la fonction nrow()
 nrow(iris)
 
-#4 Afficher le nombre de colonne avec la fonction ncol()
+# 4. Afficher le nombre de colonnes avec la fonction ncol()
 ncol(iris)
 
-#5 Afficher le nom des colonnes avec la fonction colnames()
+# 5. Afficher le nom des colonnes avec la fonction colnames()
 colnames(iris)
 
-#6 Afficher un résumé du dataframe avec la fonction summary()
+# 6. Afficher un résumé du dataframe avec la fonction summary()
 summary(iris)
 
-#7 Afficher uniquement les colonnes Sepal.Length et Species
-iris[ , c("Sepal.Length","Species")]
+# 7. Afficher uniquement les colonnes Sepal.Length et Species
+iris[ , c("Sepal.Length", "Species")]
 
-#8 Afficher uniquement la ligne 100,103 et 105
-iris[c(100, 103, 105),]
+# 8. Afficher uniquement la ligne 100, 103 et 105
+iris[c(100, 103, 105), ]
 
-#9 Afficher uniquement les lignes 50 à 100
-iris[c(50:100),]
+# 9. Afficher uniquement les lignes 50 à 100
+iris[50:100, ]
 
-#10 Calculer la moyenne de la variable Sepal.Length
+# 10. Calculer la moyenne de la variable Sepal.Length
 mean(iris$Sepal.Length)
 
-#11 Calculer la médiane de la variable Sepal.Width
-mean(iris$Sepal.Width)
+# 11. Calculer la médiane de la variable Sepal.Width
+median(iris$Sepal.Width)
 
-#12 Calculer l'écart-type de la variable Petal.Length
+# 12. Calculer l'écart-type de la variable Petal.Length
 sd(iris$Petal.Length)
 
-#13 Calculer les déciles de la variable Petal.Width
-quantile(iris$Petal.Width, probs = seq(from = 0.1, to = 0.9, by =0.1))
+# 13. Calculer les déciles de la variable Petal.Width
+quantile(iris$Petal.Width, probs = seq(from = 0.1, to = 0.9, by = 0.1))
 
-#1 Importer le jeu de données manga.csv dans un objet appelé dfManga et le jeu de données anime.csv dans un objet appelé dfAnime
+
+# EXERCICE 2 - Import/Export et Statistiques (Manga & Anime)
+
+# 1. Importer les jeux de données et vérifier la classe
 dfManga = read.csv("C:/Users/nirma/Downloads/manga.csv", header = TRUE, sep = ",", dec = ".")
+dfAnime = read.csv("C:/Users/nirma/Downloads/anime.csv", header = TRUE, sep = ",", dec = ".")
 
-# Puis afficher la classe des deux objets pour vérifier que la classe est data.frame.
 class(dfManga)
-
-dfAnime <- read.csv("C:/Users/nirma/Downloads/anime.csv", header = TRUE, sep = ",", dec = ".")
 class(dfAnime)
 
-#2 Afficher les jeux de données dans des vues pour les visualiser
+# 2. Afficher les jeux de données dans des vues
 View(dfManga)
 View(dfAnime)
 
-#3 Afficher le nombre de lignes et colonnes avec la fonction dim()
-dim(dfAnime)
+# 3. Afficher le nombre de lignes et colonnes avec la fonction dim()
 dim(dfManga)
+dim(dfAnime)
 
-#4 Calculer la moyenne de la variable Score pour les deux dataframe. Quelle est la moyenne la plus élevée ?
-mean(dfAnime$Score)
-mean(dfManga$Score)
+# 4. Calculer la moyenne du Score. Quelle est la plus élevée ?
+mean(dfManga$Score, na.rm = TRUE)
+mean(dfAnime$Score, na.rm = TRUE)
 
-#5 Calculer le nombre total de votes de la variable Vote pour les deux dataframe. Ou y a t-il le plus de votes ?
-sum(dfAnime$Vote)
-sum(dfManga$Vote)
+# 5. Calculer le nombre total de votes. Où y a-t-il le plus de votes ?
+sum(dfManga$Vote, na.rm = TRUE)
+sum(dfAnime$Vote, na.rm = TRUE)
 
-#6 Calculer l'écart-type des notes de la variable Score pour les deux dataframe. Ou est l'échantillon le plus homogènes au niveau des Score ?
-sd(dfAnime$Score)
-sd(dfManga$Score)
+# 6. Calculer l'écart-type (homogénéité) du Score
+sd(dfManga$Score, na.rm = TRUE)
+sd(dfAnime$Score, na.rm = TRUE)
 
-#7 Calculer les déciles des notes de la variable Score pour les deux dataframe. Quelle dataframe a le décile 1 le plus petit ?
-quantile(dfAnime$Score, probs = seq(from = 0.1, to = 0.9, by =0.1))
-quantile(dfManga$Score, probs = seq(from = 0.1, to = 0.9, by =0.1))
+# 7. Calculer les déciles du Score. Quel df a le décile 1 le plus petit ?
+quantile(dfManga$Score, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
+quantile(dfAnime$Score, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
 
-#1 Combien de Manga ont une note strictement supérieure à 9/10 ?
-note_sup9 = subset(dfManga, Score > 9)
-nrow(note_sup9)
 
-#2 Combien de Manga ont 200000 votes ou plus ?
-vote_sup200M = subset(dfManga, Vote >199999)
-nrow(vote_sup200M)
+# EXERCICE 3 - Filtrage avec subset()
 
-#3 Combien de Manga ont strictement plus de 200000 votes et plus de 8/10 ?
-condi = subset(dfManga,Vote>200000 & Score>8)
-nrow(condi)
+# --- FILTRE MANGAS ---
 
-#4 Combien de Manga ont une note comprise entre 7/10 et 8/10 ?
-note7a8 = subset(dfManga, Score>=7 & Score<=8)
-nrow(note7a8)
+# 1. Manga avec note > 9/10
+manga_sup9 = subset(dfManga, Score > 9)
+nrow(manga_sup9)
 
-#filtre sur les Animes
+# 2. Manga avec 200 000 votes ou plus
+manga_vote200k = subset(dfManga, Vote >= 200000)
+nrow(manga_vote200k)
 
-#1 Calculer les effectifs de la variable Rating(). Combien de modalité de la variable existe-t-il ? Calculer ensuite les effectifs en pourcentage.
-effectifRating <- table(dfAnime$Rating)
+# 3. Manga avec > 200 000 votes ET note > 8/10
+manga_top = subset(dfManga, Vote > 200000 & Score > 8)
+nrow(manga_top)
+
+# 4. Manga avec note entre 7/10 et 8/10
+manga_7_8 = subset(dfManga, Score >= 7 & Score <= 8)
+nrow(manga_7_8)
+
+
+# --- FILTRE ANIMES ---
+
+# 1. Effectifs et modalités de la variable Rating
+effectifRating = table(dfAnime$Rating)
 print(effectifRating)
-length(effectifRating)
-prop.table(effectifRating)
+length(effectifRating) # Nombre de modalités
+prop.table(effectifRating) * 100 # Pourcentage
 
-#2 Combien d'Anime sont concernés par le Rating : R - 17+ (violence & profanity) ?
-R17 = subset(dfAnime, Rating=="R - 17+ (violence & profanity)")
-nrow(R17)
+# 2. Anime Rating : R - 17+ (violence & profanity)
+anime_R17 = subset(dfAnime, Rating == "R - 17+ (violence & profanity)")
+nrow(anime_R17)
 
-#3 Combien d'Anime sont concernés par le Rating : R - 17+ (violence & profanity) et ont une note supérieur à 8/10 ?
-R3 = subset(dfAnime, Rating=="R - 17+ (violence & profanity)" & Score> 8)
-nrow(R3)
+# 3. Anime R17 et note > 8/10
+anime_R17_top = subset(dfAnime, Rating == "R - 17+ (violence & profanity)" & Score > 8)
+nrow(anime_R17_top)
 
-#4 Combien d'Anime ne correspondent pas au Rating : R - 17+ (violence & profanity) ?
-R4 = subset(dfAnime, Rating!="R - 17+ (violence & profanity)" )
-nrow(R4)
+# 4. Anime qui ne sont PAS R17
+anime_not_R17 = subset(dfAnime, Rating != "R - 17+ (violence & profanity)")
+nrow(anime_not_R17)
 
-#5 Combien d'Anime correspondent au Rating : PG - Children et G - All Ages ?
-R5 = subset(dfAnime, Rating %in% c("PG - Children","G - All Ages"))
-nrow(R5)
+# 5. Anime Rating : PG - Children et G - All Ages
+anime_kids = subset(dfAnime, Rating %in% c("PG - Children", "G - All Ages"))
+nrow(anime_kids)
 
-#6 Combien d'Anime ne correspondent pas au Rating : PG - Children et G - All Ages ?
-R6 = subset(dfAnime, !Rating %in% c("PG - Children","G - All Ages"))
-nrow(R6)
-
-#7 Combien d'Anime ont une note supérieure à 9/10 ou ont plus de 400000 votes ?
-R7 = subset(dfAnime, Score >=9 | Vote > 400000)
-nrow(R7)
-
-# Les fonctions rbind() et write.table()
-
-#1 Modifier les deux dataframe en ne conservant que les variables :
-dfAnime = dfAnime[ , c("Title","Score","Vote","Ranked")]
-View(dfAnime)
-dfManga = dfManga[ , c("Title","Score","Vote","Ranked")]
-View(dfManga)
-
-#2 Pour chaque dataframe créer une colonne Type avec pour valeur Anime ou Manga selon l'objet.
-dfAnime$Type <- "Anime"
-dfManga$Type <- "Manga"
-
-#3 Compiler les deux dataframe avec la fonction rbind() dans un objet appelé dfConcat. Vérifier le résultat avec dans une vue.
-dfConcat = rbind(dfAnime,dfManga)
-View(dfConcat)
-
-#4 Exporter le dataframe dans un fichier csv nommée ExportTp1.csv avec la fonction write.table.
-write.table(x = dfConcat, file = "C:/Users/nirma/Downloads/ExportTp1.csv",
-            sep = ";",row.names = FALSE)
-
-
-
+# 6. Anime qui ne sont PAS PG - Children ou G - All Ages
+anime_not_kids = subset(dfAnime, !Rating %in% c("PG - Children", "G - All Ages"))
+nrow(anime_not_kids)
